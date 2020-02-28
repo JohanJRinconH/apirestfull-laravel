@@ -79,7 +79,16 @@ class UsuarioController extends Controller
      */
     public function update(Request $request, $id)
     {
-           
+        request()->validate([
+            'name'    => 'required|max:255',
+            'lastname'=> 'required|max:255',
+            'rut'     => 'numeric|unique:usuarios',
+            'email'   => 'required|email|unique:usuarios',            
+        ]);
+
+        Usuario::update(request()->all());
+        
+        return "Usuario Actualizado!";       
     }
 
     /**
