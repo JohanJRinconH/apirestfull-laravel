@@ -86,7 +86,7 @@ class UsuarioController extends Controller
             'email'   => 'required|email|unique:usuarios',            
         ]);
 
-        Usuario::update(request()->all());
+        Usuario::find($id)->update(request()->all());
         
         return "Usuario Actualizado!";       
     }
