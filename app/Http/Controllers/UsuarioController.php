@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Usuario;
+use App\Rules\ValidRut; 
 
 class UsuarioController extends Controller
 {
@@ -39,13 +40,13 @@ class UsuarioController extends Controller
         request()->validate([
             'name'    => 'required|max:255',
             'lastname'=> 'required|max:255',
-            'rut'     => 'numeric|unique:usuarios',
+            'rut'     => ['string', new ValidRut, 'unique:usuarios'],
             'email'   => 'required|email|unique:usuarios',            
         ]);
 
-        Usuario::create(request()->all());
+        $usuario = Usuario::create(request()->all());
         
-        return "Usuario creado!";
+        return response()->json($usuario, 201);
     }
 
     /**
@@ -82,13 +83,13 @@ class UsuarioController extends Controller
         request()->validate([
             'name'    => 'required|max:255',
             'lastname'=> 'required|max:255',
-            'rut'     => 'numeric|unique:usuarios',
+            'rut'     => ['string', new ValidRut, 'unique:usuarios'],
             'email'   => 'required|email|unique:usuarios',            
         ]);
 
-        Usuario::find($id)->update(request()->all());
+        $usuario = Usuario::findOrFail($id)->update(request()->all());
         
-        return "Usuario Actualizado!";       
+        return response()->json($usuario, 200);
     }
 
     /**
