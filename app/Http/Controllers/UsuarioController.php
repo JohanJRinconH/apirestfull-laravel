@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Usuario;
 use App\Rules\ValidRut; 
+use Freshwork\ChileanBundle\Rut;
 
 class UsuarioController extends Controller
 {
@@ -26,7 +27,7 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        //
+        return view('form');
     }
 
     /**
@@ -40,7 +41,7 @@ class UsuarioController extends Controller
         request()->validate([
             'name'    => 'required|max:255',
             'lastname'=> 'required|max:255',
-            'rut'     => ['string', new ValidRut, 'unique:usuarios'],
+            'rut'     => 'string|cl_rut|unique:usuarios',
             'email'   => 'required|email|unique:usuarios',            
         ]);
 
@@ -68,7 +69,7 @@ class UsuarioController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
