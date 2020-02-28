@@ -14,6 +14,7 @@ class UsuarioController extends Controller
      */
     public function index()
     {
+
         return Usuario::all();  
     }
 
@@ -35,15 +36,16 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        //Instanciamos la clase 
-        $usuario = new Usuario;
-        //Declaramos el nombre con el nombre enviado en el request
-        $usuario->name = $request->name;
-        $usuario->lastname = $request->lastname;
-        $usuario->rut = $request->rut;
-        $usuario->email = $request->email;
-        //Guardamos el cambio 
-        $usuario->save();
+        request()->validate([
+            'name'    => 'required|max:255',
+            'lastname'=> 'required|max:255',
+            'rut'     => 'numeric|unique:usuarios',
+            'email'   => 'required|email|unique:usuarios',            
+        ]);
+
+        Usuario::create(request()->all());
+        
+        return "Usuario creado!";
     }
 
     /**
